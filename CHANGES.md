@@ -1,6 +1,19 @@
 python-inject changes
 =====================
 
+### 5.5.0 (2026-07-13)
+- Drop Python 3.9 support (end of life). Minimum supported version is now 3.10.
+- Adopt uv for dependencies and CI, #138.
+- Migrate dev tooling from make + tox to just, #139.
+- Fix mypy, #140.
+
+### 5.4.1 (2026-06-27)
+- Fix static typing of inject.attr(Cls), #136
+
+### 5.4.0 (2026-06-16)
+- Fix `autoparams` type annotation, #134
+- Support all context managers, #133
+
 ### 5.3.0 (2025-06-20)
 - Handle autoparams usage without braces, #115.
 
@@ -82,7 +95,7 @@ python-inject changes
   (thanks [@scharf](https://github.com/scharf)).
 
 ### 3.2.0 (2014-08-04)
-- Added `inject.configure_once` and `inject.is_configured`, #11. 
+- Added `inject.configure_once` and `inject.is_configured`, #11.
 
 ### 3.1.1 (2014-03-14)
 - Switch from root logger to module logger, #8.
@@ -93,7 +106,7 @@ python-inject changes
 
 ### 3.0.0 (2014-02-10)
 - Smaller, better, faster version with simpler and cleaner API.
- 
+
 ### 2.0.0-alpha1 (2010-08-25)
 - Second version (never made it to stable).
 

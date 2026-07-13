@@ -1,7 +1,7 @@
 import contextlib
 
 import inject
-from test import BaseTestInject
+from tests import BaseTestInject
 
 
 class Destroyable:
@@ -12,55 +12,61 @@ class Destroyable:
         self.started = False
 
 
-class MockFile(Destroyable):
-    ...
+class MockFile(Destroyable): ...
 
 
-class MockConnection(Destroyable):
-    ...
+class MockConnection(Destroyable): ...
 
 
-class MockFoo(Destroyable):
-    ...
+class MockFoo(Destroyable): ...
 
 
 @contextlib.contextmanager
 def get_file_sync():
     obj = MockFile()
-    yield obj
-    obj.destroy()
+    try:
+        yield obj
+    finally:
+        obj.destroy()
 
 
 @contextlib.contextmanager
 def get_conn_sync():
     obj = MockConnection()
-    yield obj
-    obj.destroy()
+    try:
+        yield obj
+    finally:
+        obj.destroy()
 
 
 @contextlib.contextmanager
 def get_foo_sync():
     obj = MockFoo()
-    yield obj
-    obj.destroy()
+    try:
+        yield obj
+    finally:
+        obj.destroy()
 
 
 @contextlib.asynccontextmanager
 async def get_file_async():
     obj = MockFile()
-    yield obj
-    obj.destroy()
+    try:
+        yield obj
+    finally:
+        obj.destroy()
 
 
 @contextlib.asynccontextmanager
 async def get_conn_async():
     obj = MockConnection()
-    yield obj
-    obj.destroy()
+    try:
+        yield obj
+    finally:
+        obj.destroy()
 
 
 class TestContextManagerFunctional(BaseTestInject):
-
     def test_provider_as_context_manager_sync(self):
         def config(binder):
             binder.bind_to_provider(MockFile, get_file_sync)
@@ -93,7 +99,13 @@ class TestContextManagerFunctional(BaseTestInject):
         inject.configure(config)
 
         @inject.autoparams()
-        async def mock_func(conn: MockConnection, name: str, f: MockFile, number: int, foo: MockFoo):
+        async def mock_func(  # noqa: RUF029
+            conn: MockConnection,
+            name: str,
+            f: MockFile,
+            number: int,
+            foo: MockFoo,
+        ):
             assert f.started
             assert conn.started
             assert foo.started
